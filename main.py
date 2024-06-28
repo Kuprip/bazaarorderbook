@@ -1,8 +1,17 @@
 import requests
 from matplotlib.animation import FuncAnimation
-
 import matplotlib.pyplot as plt
 
+plt.figure(figsize=(10, 12))
+def list_items():
+    response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+    if response.status_code == 200:
+        data = response.json()
+        items = data["products"].keys()
+        for item in items:
+            print(item)
+    else:
+        print("Failed to fetch item list")
 def get_order_book(item_name):
     response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
     if response.status_code == 200:
@@ -35,7 +44,7 @@ def display_data(buy_order_book, sell_order_book):
     #     print("sell order: " + str(orders))
     y_positions = range(len(buy_prices) + len(sell_prices))
     combined_prices = buy_prices + sell_prices
-
+    #plotting the data 
     plt.barh(y_positions[:len(buy_prices)], buy_amounts, height=0.4, label='Buy Orders', color='green')
     plt.barh(y_positions[len(buy_prices):], sell_amounts, height=0.4, label='Sell Orders', color='red')
 
@@ -45,7 +54,9 @@ def display_data(buy_order_book, sell_order_book):
     plt.ylabel("Price Per Unit")
     plt.title("Order Book Data")
     plt.legend()
-
+ifer = input("Do you want to list all available items? (y/n): ")
+if ifer == "y":
+    list_items()
 item_name = input("Enter the item name: ")
 bob, sob = get_order_book(item_name)
 display_data(bob, sob)
