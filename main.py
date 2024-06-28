@@ -16,8 +16,8 @@ def get_order_book(item_name):
     response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
     if response.status_code == 200:
         data = response.json()
-        buy_order_book = data["products"][item_name]["buy_summary"]
-        sell_order_book = data["products"][item_name]["sell_summary"]
+        buy_order_book = data["products"][item_name]["sell_summary"]
+        sell_order_book = data["products"][item_name]["buy_summary"]
         return buy_order_book, sell_order_book
     elif response.status_code == 503:
         print("The data is not yet populated. Please try again later.")
@@ -36,16 +36,19 @@ def update_graph(frame):
 def display_data(buy_order_book, sell_order_book):
     buy_prices = [order["pricePerUnit"] for order in buy_order_book]
     buy_amounts = [order["amount"] for order in buy_order_book]
-    sell_prices = [-order["pricePerUnit"] for order in sell_order_book]
-    sell_amounts = [order["amount"] for order in sell_order_book]  # Make sell amounts negative
-
+    sell_prices = [order["pricePerUnit"] for order in sell_order_book]
+    sell_amounts = [order["amount"] for order in sell_order_book]  
+    print(f"Buy Prices: {buy_prices}, sell prices: {sell_prices}")
     y_positions = range(len(buy_prices) + len(sell_prices))
+    #print("y positions " + str(y_positions))
     combined_prices = buy_prices + sell_prices
     combined_prices.sort()
-    print(combined_prices)
+    buy_positions = range(len(buy_prices))
+    sell_positions = range(len(buy_prices), len(buy_prices) + len(sell_prices))
+    #print("combined prices " + str(combined_prices))
     # Plotting the data
-    plt.barh(y_positions[:len(buy_prices)], buy_amounts, height=0.4, label='Buy Orders', color='green')
-    plt.barh(y_positions[len(buy_prices):], sell_amounts, height=0.4, label='Sell Orders', color='red')
+    plt.barh(list(buy_positions), buy_amounts, height=0.4, label='Buy Orders', color='green')
+    plt.barh(list(sell_positions), sell_amounts, height=0.4, label='Sell Orders', color='red')
 
     plt.yticks(y_positions, labels=[f"${price}" for price in combined_prices])
 
@@ -53,6 +56,7 @@ def display_data(buy_order_book, sell_order_book):
     plt.ylabel("Price Per Unit")
     plt.title("Order Book Data")
     plt.legend()
+
 ifer = input("Do you want to list all available items? (y/n): ")
 if ifer == "y":
     list_items()
@@ -60,5 +64,5 @@ item_name = input("Enter the item name: ")
 bob, sob = get_order_book(item_name)
 display_data(bob, sob)
 
-ani = FuncAnimation(plt.gcf(), update_graph, interval=10000, cache_frame_data=False)  # Update every 10 seconds
+ani = FuncAnimation(plt.gcf(), update_graph, interval=5000, cache_frame_data=False)  # Update every 5 seconds
 plt.show()
