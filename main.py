@@ -36,15 +36,14 @@ def update_graph(frame):
 def display_data(buy_order_book, sell_order_book):
     buy_prices = [order["pricePerUnit"] for order in buy_order_book]
     buy_amounts = [order["amount"] for order in buy_order_book]
-    sell_prices = [order["pricePerUnit"] for order in sell_order_book]
-    sell_amounts = [order["amount"] for order in sell_order_book]
-    # for orders in buy_order_book:
-    #     print("buy order: " + str(orders))
-    # for orders in sell_order_book:
-    #     print("sell order: " + str(orders))
+    sell_prices = [-order["pricePerUnit"] for order in sell_order_book]
+    sell_amounts = [order["amount"] for order in sell_order_book]  # Make sell amounts negative
+
     y_positions = range(len(buy_prices) + len(sell_prices))
     combined_prices = buy_prices + sell_prices
-    #plotting the data 
+    combined_prices.sort()
+    print(combined_prices)
+    # Plotting the data
     plt.barh(y_positions[:len(buy_prices)], buy_amounts, height=0.4, label='Buy Orders', color='green')
     plt.barh(y_positions[len(buy_prices):], sell_amounts, height=0.4, label='Sell Orders', color='red')
 
