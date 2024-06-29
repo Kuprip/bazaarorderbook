@@ -5,6 +5,23 @@ import matplotlib.pyplot as plt
 #set the size of the window on spawn
 plt.figure(figsize=(10, 12))
 #function listing the name of all items as categorized by the hypixel api
+def calculate_volume(order_book):
+    total_volume = 0
+    for order in order_book:
+        total_volume += order["pricePerUnit"] * order["amount"]
+    return total_volume
+def get_fair_value(item):
+    response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
+    if response.status_code == 200:
+        data = response.json()
+        sellPrice = data["products"][item]["quick_status"]["sellPrice"]
+        buyPrice = data["products"][item]["quick_status"]["buyPrice"]
+        fair_value = (sellPrice + buyPrice) / 2
+        return fair_value
+    else:
+        print("Failed to fetch fair value data")
+        return None
+
 def list_items():
     response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
     if response.status_code == 200:
@@ -31,9 +48,11 @@ def get_order_book(item_name):
 
 #function to update the graph, called by the animation function
 def update_graph(frame):
+    #idk what the (frame) is for but it's necessary for the function to work
     bob, sob = get_order_book(item_name)
     plt.cla()  # Clear the graph
     display_data(bob, sob)
+    print("Graph updated")
 
 def display_data(buy_order_book, sell_order_book):
     #get the prices and amounts of the orders
@@ -67,4 +86,5 @@ bob, sob = get_order_book(item_name)
 display_data(bob, sob)
 
 ani = FuncAnimation(plt.gcf(), update_graph, interval=5000, cache_frame_data=False)  # Update every 5 seconds
-plt.show
+
+plt.show()
