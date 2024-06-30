@@ -21,7 +21,8 @@ def record():
             fair_value, sellprice, buyprice = get_fair_value(item)
             actual_file_name = filename + "_" + item + ".txt"
             with open (actual_file_name, "a") as f:
-                f.write(str(datetime.now()) + ": sellprice: " + str(sellprice) + " buyprice: " + str(buyprice) + " avg: " + str(fair_value) + "\n")
+                f.write(f"{datetime.now()}; sellprice: {sellprice}; buyprice: {buyprice}; avg: {fair_value}")
+                time.sleep(5)
         except Exception as e:
             print(f"An error occurred: {e}")
             time.sleep(5)
