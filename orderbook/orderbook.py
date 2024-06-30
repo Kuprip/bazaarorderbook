@@ -10,17 +10,7 @@ def calculate_volume(order_book):
     for order in order_book:
         total_volume += order["pricePerUnit"] * order["amount"]
     return total_volume
-def get_fair_value(item):
-    response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")
-    if response.status_code == 200:
-        data = response.json()
-        sellPrice = data["products"][item]["quick_status"]["sellPrice"]
-        buyPrice = data["products"][item]["quick_status"]["buyPrice"]
-        fair_value = (sellPrice + buyPrice) / 2
-        return fair_value
-    else:
-        print("Failed to fetch fair value data")
-        return None
+
 
 def list_items():
     response = requests.get("https://api.hypixel.net/v2/skyblock/bazaar")

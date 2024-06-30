@@ -16,9 +16,10 @@ def get_volume():
             lowest_volume_list[product] = calculate_volume(data["products"][product]["sell_summary"]) + calculate_volume(data["products"][product]["buy_summary"])
         return lowest_volume_list
 if __name__ == "__main__":
+    min_volume = input("Enter the minimum volume: ")
     volume_list = get_volume()
     sorted_list = sorted(volume_list.items(), key=lambda x: x[1])
-    sorted_list = [(item, value) for item, value in sorted_list if value > 1000000]
+    sorted_list = [(item, value) for item, value in sorted_list if value > int(min_volume)]
     with open ("volume_list.txt", "w") as f:
         for item in sorted_list:
             f.write(f"{item[0]}: {item[1]}\n")
