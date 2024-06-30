@@ -37,9 +37,8 @@ if __name__ == "__main__":
         
         if int(item[1]) < min_volume or get_fair_value(item[0]) < min_price:
             del sorted_list[item[0]]
+            print("niggger")
     #print(sorted_list)
-    sorted_list = dict(sorted(volume_list.items(), key=lambda x: x[1]))
-
     with open ("volume_calculator/volume_list.txt", "w") as f:
         for item in sorted_list:
             item = (item, sorted_list[item])
