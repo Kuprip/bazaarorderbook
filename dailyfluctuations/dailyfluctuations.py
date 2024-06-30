@@ -14,7 +14,7 @@ def get_fair_value(item):
         return None
 def record():
     item = input("Input the item: ")  
-    filename = "/home/bazyl/bazaarorderbook/price_records"  
+    filename = "/home/bazyl/bazaarorderbook/dailyfluctuations/price_records/price_records"  
     
     while True:
         try:
