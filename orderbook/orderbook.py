@@ -68,8 +68,8 @@ def display_data(buy_order_book, sell_order_book):
     plt.ylabel("Price")
     plt.title("Order Book")
     plt.legend()
-
-if input("Do you want to list all available items? (y/n): ") == "y":
+ 
+if input("Do you want to list all available items? (y/N): ") == "y":
     list_items()
 item_name = input("Enter the item name: ")
 bob, sob = get_order_book(item_name)
